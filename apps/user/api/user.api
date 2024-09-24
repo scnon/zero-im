@@ -1,0 +1,33 @@
+﻿syntax = "v1"
+
+info (
+    title: "User API",
+    description: "API for user management",
+    version: "1.0"
+)
+
+type UserEntity {
+    id string
+    phone string
+    nickname string
+    avatar string
+}
+
+type LoginReq {
+    phone string
+    password string
+}
+
+type LoginResp {
+    token string
+    expired int64
+}
+
+@server (
+    group: user
+    prefix: /api/v1/user
+)
+service user {
+    @handler userLogin
+    post /login (LoginReq) returns (LoginResp)
+}
