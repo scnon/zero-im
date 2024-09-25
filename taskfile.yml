@@ -1,0 +1,27 @@
+﻿version: '3'
+
+vars:
+  STYLE: --style go_zero
+
+tasks:
+  sql-user:
+    cmds:
+      - goctl model mysql ddl -src="./deploy/sql/user.sql" -dir="./apps/user/models" -c {{.STYLE}}
+
+  api-user:
+    cmds:
+      - goctl api go --api apps/user/api/user.api --dir apps/user/api {{.STYLE}}
+
+  proto-user:
+    cmds:
+      - goctl rpc protoc apps/user/rpc/user.proto --go_out=apps/user/rpc --go-grpc_out=apps/user/rpc 
+        --zrpc_out=apps/user/rpc {{.STYLE}}
+
+  api:
+    cmds:
+      - for: [user]
+        task: api-{{.ITEM}}
+  proto:
+    cmds:
+      - for: [user]
+        task: proto-{{.ITEM}}

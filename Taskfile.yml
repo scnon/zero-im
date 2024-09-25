@@ -1,6 +1,0 @@
-﻿version: '3'
-
-tasks:
-  sql_user:
-    cmds:
-      - goctl model mysql ddl -src="./deploy/sql/user.sql" -dir="./apps/user/models" -c

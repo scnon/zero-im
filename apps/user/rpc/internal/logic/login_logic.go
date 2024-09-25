@@ -6,6 +6,7 @@ import (
 	"time"
 	"zero-im/apps/user/models"
 	"zero-im/pkg/ctxdata"
+	"zero-im/pkg/encrypt"
 	"zero-im/pkg/xerr"
 
 	"zero-im/apps/user/rpc/internal/svc"
@@ -42,7 +43,11 @@ func (l *LoginLogic) Login(in *user.LoginReq) (*user.LoginResp, error) {
 		}
 		return nil, errors.Wrapf(xerr.NewDBErr(), "find user by phone err %v, req %v", err, in.Phone)
 	}
-	// todo)) 检查密码
+
+	// 检查密码
+	if !encrypt.ValidatePasswordHash(in.Password, entity.Password) {
+		return nil, errors.WithStack(ErrPasswordError)
+	}
 
 	// 生成 token
 	now := time.Now().Unix()

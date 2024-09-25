@@ -2,10 +2,13 @@ package logic
 
 import (
 	"context"
+	"database/sql"
 	"github.com/pkg/errors"
 	"time"
 	"zero-im/apps/user/models"
 	"zero-im/pkg/ctxdata"
+	"zero-im/pkg/encrypt"
+	"zero-im/pkg/wuid"
 	"zero-im/pkg/xerr"
 
 	"zero-im/apps/user/rpc/internal/svc"
@@ -43,12 +46,23 @@ func (l *RegisterLogic) Register(in *user.RegisterReq) (*user.RegisterResp, erro
 	}
 
 	userEntity = &models.Users{
-		Phone: in.Phone,
+		Id:       wuid.GenUid(l.svcCtx.Config.Mysql.DataSource),
+		Phone:    in.Phone,
+		Avatar:   in.Avatar,
+		Nickname: in.Nickname,
+		Sex: sql.NullInt64{
+			Int64: int64(in.Sex),
+			Valid: true,
+		},
 	}
 
 	if len(in.Password) > 0 {
-		// todo)) 加密密码
-		userEntity.Password = in.Password
+		// 加密密码
+		genPwd, err := encrypt.GenPasswordHash([]byte(in.Password))
+		if err != nil {
+			return nil, errors.Wrapf(xerr.NewInternalErr(), "generate password hash err %v", err)
+		}
+		userEntity.Password = string(genPwd)
 	}
 
 	// 插入用户数据

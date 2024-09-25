@@ -2,8 +2,9 @@ package logic
 
 import (
 	"context"
-	"errors"
+	"github.com/pkg/errors"
 	"zero-im/apps/user/models"
+	"zero-im/pkg/xerr"
 
 	"zero-im/apps/user/rpc/internal/svc"
 	"zero-im/apps/user/rpc/user"
@@ -34,14 +35,15 @@ func (l *GetUserInfoLogic) GetUserInfo(in *user.GetUserInfoReq) (*user.GetUserIn
 	model, err := l.svcCtx.UsersModel.FindOne(l.ctx, in.Id)
 	if err != nil {
 		if errors.Is(err, models.ErrNotFound) {
-			return nil, ErrUserNotFound
+			return nil, errors.WithStack(ErrUserNotFound)
 		}
-		return nil, err
+
+		return nil, errors.Wrapf(xerr.NewDBErr(), "find user by id err %v, req %v", err, in.Id)
 	}
 
 	var entity user.UserEntity
 	if err = copier.Copy(&entity, model); err != nil {
-		return nil, err
+		return nil, errors.Wrapf(xerr.NewInternalErr(), "copy user entity err %v", err)
 	}
 
 	return &user.GetUserInfoResp{
