@@ -4,10 +4,10 @@ import (
 	"flag"
 	"fmt"
 
-	"zero-im/apps/social/rpc/social/internal/config"
-	"zero-im/apps/social/rpc/social/internal/server"
-	"zero-im/apps/social/rpc/social/internal/svc"
-	"zero-im/apps/social/rpc/social/social"
+	"zero-im/apps/social/rpc/internal/config"
+	"zero-im/apps/social/rpc/internal/server"
+	"zero-im/apps/social/rpc/internal/svc"
+	"zero-im/apps/social/rpc/social"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"

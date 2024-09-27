@@ -2,11 +2,13 @@
 
 import (
 	"context"
-	"github.com/pkg/errors"
-	zrpcErr "github.com/zeromicro/x/errors"
-	"google.golang.org/grpc/status"
 	"net/http"
 	"zero-im/pkg/xerr"
+
+	"github.com/pkg/errors"
+	"github.com/zeromicro/go-zero/core/logx"
+	zrpcErr "github.com/zeromicro/x/errors"
+	"google.golang.org/grpc/status"
 )
 
 type Response struct {
@@ -35,8 +37,8 @@ func OkHandler(_ context.Context, v interface{}) any {
 	return Success(v)
 }
 
-func ErrHandler(name string) func(err error) (int, any) {
-	return func(err error) (int, any) {
+func ErrHandler(name string) func(c context.Context, err error) (int, any) {
+	return func(c context.Context, err error) (int, any) {
 		errCode := xerr.SERVER_COMMON_ERROR
 		errMsg := xerr.ErrMsg(errCode)
 
@@ -50,6 +52,9 @@ func ErrHandler(name string) func(err error) (int, any) {
 				errMsg = gs.Message()
 			}
 		}
+
+		// 日志记录
+		logx.WithContext(c).Errorf("【%s】 err %v", name, err)
 
 		return http.StatusBadRequest, Fail(errCode, errMsg)
 	}

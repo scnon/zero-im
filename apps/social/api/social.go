@@ -4,15 +4,17 @@ import (
 	"flag"
 	"fmt"
 
-	"zero-im/apps/social/api/social/internal/config"
-	"zero-im/apps/social/api/social/internal/handler"
-	"zero-im/apps/social/api/social/internal/svc"
+	"zero-im/apps/social/api/internal/config"
+	"zero-im/apps/social/api/internal/handler"
+	"zero-im/apps/social/api/internal/svc"
+	"zero-im/pkg/resultx"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
+	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
-var configFile = flag.String("f", "etc/social-api.yaml", "the config file")
+var configFile = flag.String("f", "etc/social.yaml", "the config file")
 
 func main() {
 	flag.Parse()
@@ -25,6 +27,9 @@ func main() {
 
 	ctx := svc.NewServiceContext(c)
 	handler.RegisterHandlers(server, ctx)
+
+	httpx.SetErrorHandlerCtx(resultx.ErrHandler(c.Name))
+	httpx.SetOkHandler(resultx.OkHandler)
 
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)
 	server.Start()
