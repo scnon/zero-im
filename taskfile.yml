@@ -17,11 +17,24 @@ tasks:
       - goctl rpc protoc apps/user/rpc/user.proto --go_out=apps/user/rpc --go-grpc_out=apps/user/rpc 
         --zrpc_out=apps/user/rpc {{.STYLE}}
 
+  sql-social:
+    cmds:
+      - goctl model mysql ddl -src="./deploy/sql/social.sql" -dir="./apps/social/models" -c {{.STYLE}}
+
+  api-social:
+    cmds:
+      - goctl api go --api apps/social/api/social.api --dir apps/social/api {{.STYLE}}
+
+  proto-social:
+    cmds:
+      - goctl rpc protoc apps/social/rpc/social.proto --go_out=apps/social/rpc --go-grpc_out=apps/social/rpc 
+        --zrpc_out=apps/social/rpc {{.STYLE}}
+
   api:
     cmds:
-      - for: [user]
+      - for: [user, social]
         task: api-{{.ITEM}}
   proto:
     cmds:
-      - for: [user]
+      - for: [user, social]
         task: proto-{{.ITEM}}
