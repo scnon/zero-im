@@ -1,14 +1,12 @@
 Name: user
-Host: localhost
-Port: 8888
+Host: 127.0.0.1
+Port: 8000
 
 UserRpc:
   Etcd:
     Hosts:
-      - localhost:2379
+      - 127.0.0.1:2379
     Key: user.rpc
-  Timeout: 20000
 
 JwtAuth:
   AccessSecret: zero-im-user
-  AccessExpire: 3600

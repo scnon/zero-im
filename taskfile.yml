@@ -29,12 +29,21 @@ tasks:
     cmds:
       - goctl rpc protoc apps/social/rpc/social.proto --go_out=apps/social/rpc --go-grpc_out=apps/social/rpc 
         --zrpc_out=apps/social/rpc {{.STYLE}}
+  
+  api-im:
+    cmds:
+      - goctl api go --api apps/im/api/im.api --dir apps/im/api {{.STYLE}}
+  
+  proto-im:
+    cmds:
+      - goctl rpc protoc apps/im/rpc/im.proto --go_out=apps/im/rpc --go-grpc_out=apps/im/rpc 
+        --zrpc_out=apps/im/rpc {{.STYLE}}
 
   api:
     cmds:
-      - for: [user, social]
+      - for: [user, social, im]
         task: api-{{.ITEM}}
   proto:
     cmds:
-      - for: [user, social]
+      - for: [user, social, im]
         task: proto-{{.ITEM}}

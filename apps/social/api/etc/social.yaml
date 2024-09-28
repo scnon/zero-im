@@ -1,6 +1,6 @@
 Name: social
-Host: 0.0.0.0
-Port: 8888
+Host: 127.0.0.1
+Port: 8001
 
 SocialRpc:
   Etcd:
@@ -15,5 +15,4 @@ UserRpc:
     Key: user.rpc
 
 JwtAuth:
-  AccessSecret: zero-im
-  AccessExpire: 3600
+  AccessSecret: zero-im-user

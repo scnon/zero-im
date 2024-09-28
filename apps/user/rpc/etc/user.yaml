@@ -1,5 +1,5 @@
 Name: user.rpc
-ListenOn: 0.0.0.0:10000
+ListenOn: 127.0.0.1:10000
 Etcd:
   Hosts:
   - 127.0.0.1:2379
@@ -9,10 +9,10 @@ Mysql:
   DataSource: root:root@tcp(127.0.0.1:13306)/zero-im?charset=utf8mb4&parseTime=True&loc=Local
 
 Cache:
-  - Host: localhost:16379
+  - Host: 127.0.0.1:16379
     Type: node
     Pass:
 
 Jwt:
   AccessSecret: zero-im-user
-  AccessExpire: 360
+  AccessExpire: 3600
