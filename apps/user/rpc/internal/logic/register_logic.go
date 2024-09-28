@@ -79,7 +79,7 @@ func (l *RegisterLogic) Register(in *user.RegisterReq) (*user.RegisterResp, erro
 	}
 
 	return &user.RegisterResp{
-		Token:   token,
-		Expired: now + l.svcCtx.Config.Jwt.AccessExpire,
+		Token:  token,
+		Expire: now + l.svcCtx.Config.Jwt.AccessExpire,
 	}, nil
 }

@@ -28,7 +28,7 @@ message LoginReq {
 
 message LoginResp {
     string token = 1;
-    int64 expired = 2;
+    int64 expire = 2;
 }
 
 message RegisterReq {
@@ -41,7 +41,7 @@ message RegisterReq {
 
 message RegisterResp {
     string token = 1;
-    int64 expired = 2;
+    int64 expire = 2;
 }
 
 message GetUserInfoReq {

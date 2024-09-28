@@ -1,29 +1,28 @@
-﻿@baseUrl = http://localhost:8888
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjcyOTE0MDgsImlhdCI6MTcyNzI5MTA0OCwiemVyby1pbSI6IjB4MDAwMDAwMTAwMDAwMDAwMSJ9.X-KZT10gQM80nqERhHPcUJ3m9Z5p6mwaAgaT_cR9KY0
-
-
+﻿
 ###
-POST {{baseUrl}}/v1/user/register
+POST {{host}}/v1/user/register
 Content-Type: application/json
 
 {
-  "phone": "1234567890",
-  "password": "123456",
-  "nickname": "test",
+  "phone": "1231231",
+  "password": "123123",
+  "nickname": "xing",
   "sex": 1,
   "avatar": "https://avatars3.githubusercontent.com/u/4650242"
 }
+> {% client.global.set("token", response.body.data.token); %}
 
 ###
-POST {{baseUrl}}/v1/user/login
+POST {{host}}/v1/user/login
 Content-Type: application/json
 
 {
-    "phone": "1234567890",
-    "password": "123456"
+    "phone": "1231231",
+    "password": "123123"
 }
+> {% client.global.set("token", response.body.data.token); %}
 
 ###
-GET {{baseUrl}}/v1/user/user
+GET {{host}}/v1/user/user
 Content-Type: application/json
 Authorization: Bearer {{token}}
